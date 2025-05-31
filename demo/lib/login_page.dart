@@ -1,3 +1,5 @@
+import 'package:demo/color_palette.dart';
+import 'package:demo/main_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,8 +28,8 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person),
                 hintText: "Username",
-                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(255, 107, 53, 1)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorPalette.primaryColor),
                 ),
                 border: OutlineInputBorder(),
               ),
@@ -42,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                 prefixIcon: Icon(Icons.lock),
                 hintText: "Password",
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(255, 107, 53, 1)),
+                  borderSide: BorderSide(color: ColorPalette.primaryColor),
                 ),
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
@@ -66,13 +68,18 @@ class _LoginPageState extends State<LoginPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(255, 107, 53, 1),
+                  backgroundColor:ColorPalette.primaryColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                },
                 child: const Text("Sign in"),
               ),
             ),
