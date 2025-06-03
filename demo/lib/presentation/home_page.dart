@@ -1,4 +1,7 @@
+import 'package:demo/data/remote/shoe_service.dart';
+import 'package:demo/domain/shoe.dart';
 import 'package:demo/presentation/color_palette.dart';
+import 'package:demo/presentation/shoe_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,8 +12,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> genders = ["All", "Women", "Men", "Kids"];
-  String selectedGender = "All";
+  final List<String> _genders = ["All", "Women", "Men", "Kids"];
+  String _selectedGender = "All";
+  List<Shoe> _shoes = [];
+  List<Shoe> _filteredShoes = [];
+
+  final TextEditingController _search = TextEditingController();
+
+  void _onChangedText() {
+    final query = _search.text.trim().toLowerCase();
+
+    setState(() {
+      if (query.isEmpty) {
+        _filteredShoes = _shoes;
+      } else {
+        _filteredShoes = _shoes
+            .where((shoe) => shoe.name.toLowerCase().contains(query))
+            .toList();
+      }
+    });
+  }
+
+  Future loadData() async {
+    final List<Shoe> shoes = await ShoeService().getShoes();
+
+    setState(() {
+      _shoes = shoes;
+      _filteredShoes = _shoes;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +56,8 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              onChanged: (_) => _onChangedText(),
+              controller: _search,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person),
                 hintText: "Search",
@@ -85,15 +123,26 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 50,
             child: ListView.builder(
-              itemCount: genders.length,
+              itemCount: _genders.length,
               padding: EdgeInsets.symmetric(horizontal: 8),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                final String gender = genders[index];
-                final bool isSelected = gender == selectedGender;
+                final String gender = _genders[index];
+                final bool isSelected = gender == _selectedGender;
                 return GestureDetector(
                   onTap: () => setState(() {
-                    selectedGender = gender;
+                    _selectedGender = gender;
+                    if (gender.toLowerCase() == 'all') {
+                      _filteredShoes = _shoes;
+                    } else {
+                      _filteredShoes = _shoes
+                          .where(
+                            (shoe) =>
+                                shoe.gender.toLowerCase() ==
+                                gender.toLowerCase(),
+                          )
+                          .toList();
+                    }
                   }),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -112,11 +161,49 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          genders[index],
+                          _genders[index],
                           style: TextStyle(
                             color: isSelected ? Colors.white : Colors.black54,
                           ),
                         ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          Expanded(
+            child: GridView.builder(
+              itemCount: _filteredShoes.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemBuilder: (context, index) {
+                final Shoe shoe = _filteredShoes[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ShoeDetailPage(shoe: shoe),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Expanded(child: Image.network(shoe.image)),
+                          Text(
+                            shoe.name,
+                            maxLines: 1,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(shoe.brand),
+                        ],
                       ),
                     ),
                   ),
