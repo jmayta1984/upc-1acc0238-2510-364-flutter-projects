@@ -1,4 +1,4 @@
-import 'package:demo/color_palette.dart';
+import 'package:demo/presentation/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> genders = ["All", "Women", "Men", "kids"];
+  List<String> genders = ["All", "Women", "Men", "Kids"];
   String selectedGender = "All";
 
   @override
@@ -89,18 +89,35 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: genders[index] == selectedGender
-                          ? ColorPalette.primaryColor
-                          : Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(genders[index]),
+                final String gender = genders[index];
+                final bool isSelected = gender == selectedGender;
+                return GestureDetector(
+                  onTap: () => setState(() {
+                    selectedGender = gender;
+                  }),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isSelected
+                              ? ColorPalette.primaryColor
+                              : Colors.black54,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        color: isSelected
+                            ? ColorPalette.primaryColor
+                            : Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          genders[index],
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black54,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 );

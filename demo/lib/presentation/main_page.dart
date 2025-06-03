@@ -1,5 +1,5 @@
-import 'package:demo/color_palette.dart';
-import 'package:demo/home_page.dart';
+import 'package:demo/presentation/color_palette.dart';
+import 'package:demo/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
