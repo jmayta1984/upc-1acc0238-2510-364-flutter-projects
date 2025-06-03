@@ -191,19 +191,22 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Expanded(child: Image.network(shoe.image)),
-                          Text(
-                            shoe.name,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(shoe.brand),
-                        ],
+                  child: Hero(
+                    tag: shoe.id,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Expanded(child: Image.network(shoe.image)),
+                            Text(
+                              shoe.name,
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(shoe.brand),
+                          ],
+                        ),
                       ),
                     ),
                   ),
