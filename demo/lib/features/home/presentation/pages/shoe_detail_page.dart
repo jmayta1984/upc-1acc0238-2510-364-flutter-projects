@@ -1,4 +1,4 @@
-import 'package:demo/domain/shoe.dart';
+import 'package:demo/features/home/domain/entities/shoe.dart';
 import 'package:demo/core/themes/color_palette.dart';
 import 'package:flutter/material.dart';
 

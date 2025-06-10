@@ -1,4 +1,4 @@
-import 'package:demo/domain/shoe.dart';
+import 'package:demo/features/home/domain/entities/shoe.dart';
 
 class ShoeDto {
   final int id;

@@ -1,5 +1,5 @@
-import 'package:demo/data/remote/shoe_service.dart';
-import 'package:demo/domain/shoe.dart';
+import 'package:demo/features/home/data/repositories/shoe_repository.dart';
+import 'package:demo/features/home/domain/entities/shoe.dart';
 import 'package:demo/core/themes/color_palette.dart';
 import 'package:demo/features/home/presentation/pages/shoe_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future loadData() async {
-    final List<Shoe> shoes = await ShoeService().getShoes();
+    final List<Shoe> shoes = await ShoeRepository().getShoes();
 
     setState(() {
       _shoes = shoes;
@@ -191,22 +191,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
-                  child: Hero(
-                    tag: shoe.id,
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Expanded(child: Image.network(shoe.image)),
-                            Text(
-                              shoe.name,
-                              maxLines: 1,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(shoe.brand),
-                          ],
-                        ),
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Expanded(child: Hero(
+                            tag: shoe.id,
+                            child: Image.network(shoe.image))),
+                          Text(
+                            shoe.name,
+                            maxLines: 1,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(shoe.brand),
+                        ],
                       ),
                     ),
                   ),
