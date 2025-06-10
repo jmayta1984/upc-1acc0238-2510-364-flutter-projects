@@ -1,5 +1,5 @@
 import 'package:demo/domain/shoe.dart';
-import 'package:demo/presentation/color_palette.dart';
+import 'package:demo/core/themes/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class ShoeDetailPage extends StatefulWidget {

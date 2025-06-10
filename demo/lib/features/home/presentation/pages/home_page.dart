@@ -1,7 +1,7 @@
 import 'package:demo/data/remote/shoe_service.dart';
 import 'package:demo/domain/shoe.dart';
-import 'package:demo/presentation/color_palette.dart';
-import 'package:demo/presentation/shoe_detail_page.dart';
+import 'package:demo/core/themes/color_palette.dart';
+import 'package:demo/features/home/presentation/pages/shoe_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
