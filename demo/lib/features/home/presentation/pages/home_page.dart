@@ -1,8 +1,10 @@
-import 'package:demo/features/home/data/repositories/shoe_repository.dart';
-import 'package:demo/features/home/domain/entities/shoe.dart';
 import 'package:demo/core/themes/color_palette.dart';
-import 'package:demo/features/home/presentation/pages/shoe_detail_page.dart';
+import 'package:demo/features/home/presentation/blocs/shoes_bloc.dart';
+import 'package:demo/features/home/presentation/blocs/shoes_event.dart';
+import 'package:demo/features/home/presentation/blocs/shoes_state.dart';
+import 'package:demo/features/home/presentation/widgets/shoe_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,11 +16,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<String> _genders = ["All", "Women", "Men", "Kids"];
   String _selectedGender = "All";
+  /*
   List<Shoe> _shoes = [];
   List<Shoe> _filteredShoes = [];
-
+*/
   final TextEditingController _search = TextEditingController();
 
+  /*
   void _onChangedText() {
     final query = _search.text.trim().toLowerCase();
 
@@ -32,7 +36,8 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
-
+*/
+  /*
   Future loadData() async {
     final List<Shoe> shoes = await ShoeRepository().getShoes();
 
@@ -41,11 +46,12 @@ class _HomePageState extends State<HomePage> {
       _filteredShoes = _shoes;
     });
   }
-
+*/
   @override
   void initState() {
     super.initState();
-    loadData();
+    context.read<ShoesBloc>().add(GetShoesEvent());
+    //loadData();
   }
 
   @override
@@ -56,7 +62,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              onChanged: (_) => _onChangedText(),
+              //  onChanged: (_) => _onChangedText(),
               controller: _search,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person),
@@ -132,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                 return GestureDetector(
                   onTap: () => setState(() {
                     _selectedGender = gender;
-                    if (gender.toLowerCase() == 'all') {
+                    /*   if (gender.toLowerCase() == 'all') {
                       _filteredShoes = _shoes;
                     } else {
                       _filteredShoes = _shoes
@@ -143,6 +149,7 @@ class _HomePageState extends State<HomePage> {
                           )
                           .toList();
                     }
+                    */
                   }),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -175,41 +182,20 @@ class _HomePageState extends State<HomePage> {
           ),
 
           Expanded(
-            child: GridView.builder(
-              itemCount: _filteredShoes.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (context, index) {
-                final Shoe shoe = _filteredShoes[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ShoeDetailPage(shoe: shoe),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Expanded(child: Hero(
-                            tag: shoe.id,
-                            child: Image.network(shoe.image))),
-                          Text(
-                            shoe.name,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(shoe.brand),
-                        ],
-                      ),
+            child: BlocBuilder<ShoesBloc, ShoesState>(
+              builder: (context, state) {
+                if (state is LoadingShoesState) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: ColorPalette.primaryColor,
                     ),
-                  ),
-                );
+                  );
+                } else if (state is SuccessShoesState) {
+                  return ShoeListView(shoes: state.shoes);
+                } else if (state is FailureShoesState) {
+                  return Center(child: Text(state.errorMessage));
+                }
+                return Center(child: Text('what?'));
               },
             ),
           ),

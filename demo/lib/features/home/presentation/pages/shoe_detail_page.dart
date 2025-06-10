@@ -17,6 +17,21 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
   Widget build(BuildContext context) {
     final List<ShoeSize> sizes = widget.shoe.sizes;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ColorPalette.primaryColor,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () {},
+          child: const Text("Add to cart"),
+        ),
+      ),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
@@ -25,9 +40,22 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
               floating: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: Hero(
-                  tag: widget.shoe.id,
-                  child: Image.network(widget.shoe.image)),
+                background: Stack(
+                  children: [
+                    Hero(
+                      tag: widget.shoe.id,
+                      child: Image.network(widget.shoe.image),
+                    ),
+                    Positioned(
+                      top: 60,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.favorite_border),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ];
@@ -39,7 +67,6 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
             children: [
               Text(widget.shoe.name, style: TextStyle(fontSize: 24)),
               Text(widget.shoe.brand),
-
               SizedBox(
                 height: 50,
                 child: ListView.builder(

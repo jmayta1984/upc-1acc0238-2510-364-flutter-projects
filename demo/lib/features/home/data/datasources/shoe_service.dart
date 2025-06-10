@@ -12,6 +12,6 @@ class ShoeService {
       List maps = jsonDecode(response.body);
       return maps.map((e) => ShoeDto.fromJson(e)).toList();
     }
-    return [];
+    return Future.error("Error fetching shoes: ${response.statusCode}");
   }
 }
