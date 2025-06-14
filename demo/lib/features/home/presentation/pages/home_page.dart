@@ -14,8 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> _genders = ["All", "Women", "Men", "Kids"];
+  /*final List<String> _genders = ["All", "Women", "Men", "Kids"];
   String _selectedGender = "All";
+ */
   /*
   List<Shoe> _shoes = [];
   List<Shoe> _filteredShoes = [];
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
+/*
           SizedBox(
             height: 50,
             child: ListView.builder(
@@ -180,7 +181,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-
+*/
           Expanded(
             child: BlocBuilder<ShoesBloc, ShoesState>(
               builder: (context, state) {

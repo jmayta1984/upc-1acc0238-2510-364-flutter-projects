@@ -8,7 +8,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(InitialAuthState()) {
     on<LoginEvent>((event, emit) async {
       emit(LoadingAuthState());
-      await Future.delayed(const Duration(milliseconds: 2000));
+      //await Future.delayed(const Duration(milliseconds: 2000));
       try {
         final User user = await AuthRepository().login(
           event.username,
