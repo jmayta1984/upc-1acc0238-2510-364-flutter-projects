@@ -1,6 +1,9 @@
 import 'package:demo/core/themes/color_palette.dart';
 import 'package:demo/features/favorites/domain/entities/favorite_shoe.dart';
+import 'package:demo/features/favorites/presentation/blocs/favorite_bloc.dart';
+import 'package:demo/features/favorites/presentation/blocs/favorite_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteShoeListView extends StatelessWidget {
   const FavoriteShoeListView({super.key, required this.favorites});
@@ -101,9 +104,14 @@ class FavoriteShoeListView extends StatelessWidget {
                                 leading: Icon(Icons.shopping_cart_outlined),
                                 title: Text('Add to cart'),
                               ),
-                              ListTile(
-                                leading: Icon(Icons.delete_outline_outlined),
-                                title: Text('Remove from favorites'),
+                              GestureDetector(
+                                onTap: (){
+                              //    context.read<FavoriteBloc>().add(RemoveFavoriteEvent(id: id))
+                                },
+                                child: ListTile(
+                                  leading: Icon(Icons.delete_outline_outlined),
+                                  title: Text('Remove from favorites'),
+                                ),
                               ),
                             ],
                           ),
