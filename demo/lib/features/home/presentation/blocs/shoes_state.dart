@@ -17,3 +17,8 @@ class FailureShoesState extends ShoesState {
   final String errorMessage;
   const FailureShoesState({required this.errorMessage});
 }
+
+class LoadedShoeState extends ShoesState {
+  final Shoe shoe;
+  const LoadedShoeState({required this.shoe});
+}

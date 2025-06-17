@@ -29,9 +29,24 @@ class ShoeListView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Hero(tag: shoe.id, child: Image.network(shoe.image)),
+                    child: Center(
+                      child: SizedBox(
+                        width: 120,
+                        height: 90,
+                        child: Hero(
+                          tag: shoe.id,
+                          child: Image.network(shoe.image, fit: BoxFit.cover,),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '\$ ${shoe.price}',
+
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
                     shoe.name,

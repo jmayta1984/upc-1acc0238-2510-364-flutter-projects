@@ -1,4 +1,3 @@
-import 'package:demo/features/favorites/domain/entities/favorite_shoe.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_bloc.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_event.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_state.dart';
@@ -23,6 +22,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Favorites'),
+      ),
       body: BlocBuilder<FavoriteBloc, FavoriteState>(
         builder: (context, state) {
           if (state is LoadedFavoriteState) {

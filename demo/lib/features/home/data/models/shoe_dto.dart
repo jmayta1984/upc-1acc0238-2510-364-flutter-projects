@@ -8,6 +8,7 @@ class ShoeDto {
   final int price;
   final String brand;
   final String category;
+  final String description;
   final List<ShoeSizeDto> sizes;
 
   ShoeDto({
@@ -18,6 +19,7 @@ class ShoeDto {
     required this.price,
     required this.brand,
     required this.category,
+    required this.description,
     required this.sizes,
   });
 
@@ -29,6 +31,7 @@ class ShoeDto {
       image: json['image'],
       price: json['price'],
       brand: json['brand'],
+      description: json['description'],
       category: json['category'],
       sizes: (json['sizes_available'] as List)
           .map(
@@ -49,6 +52,7 @@ class ShoeDto {
       gender: gender,
       price: price,
       image: image,
+      description: description,
       sizes: sizes.map((e) => e.toDomain()).toList(),
     );
   }

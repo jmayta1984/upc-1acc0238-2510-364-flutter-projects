@@ -5,6 +5,7 @@ class Shoe {
   String gender;
   int price;
   String image;
+  String description;
   List<ShoeSize> sizes;
 
   Shoe({
@@ -14,6 +15,7 @@ class Shoe {
     required this.brand,
     required this.price,
     required this.image,
+    required this.description,
     required this.sizes
   });
 }

@@ -1,6 +1,7 @@
 import 'package:demo/features/favorites/domain/entities/favorite_shoe.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_bloc.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_event.dart';
+import 'package:demo/features/favorites/presentation/blocs/favorite_state.dart';
 import 'package:demo/features/home/domain/entities/shoe.dart';
 import 'package:demo/core/themes/color_palette.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,12 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
   String _selectedSize = "";
 
   @override
+  void initState() {
+    context.read<FavoriteBloc>().add(IsFavoriteEvent(id: widget.shoe.id));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Shoe shoe = widget.shoe;
     final List<ShoeSize> sizes = shoe.sizes;
@@ -25,39 +32,49 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SizedBox(
         width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorPalette.primaryColor,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorPalette.primaryColor,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
+            onPressed: _selectedSize.isEmpty ? null : () {},
+            child: const Text("Add to cart"),
           ),
-          onPressed: () {},
-          child: const Text("Add to cart"),
         ),
       ),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 400,
+              primary: false,
+              expandedHeight: 300,
               floating: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: Stack(
                   children: [
-                    Hero(
-                      tag: widget.shoe.id,
-                      child: Image.network(widget.shoe.image),
+                    Center(
+                      child: SizedBox(
+                        height: 300,
+                        width: double.infinity,
+                        child: Hero(
+                          tag: shoe.id,
+                          child: Image.network(shoe.image, fit: BoxFit.cover),
+                        ),
+                      ),
                     ),
                     Positioned(
-                      top: 60,
+                      top: 50,
                       right: 0,
                       child: IconButton(
                         onPressed: () {
                           context.read<FavoriteBloc>().add(
-                            AddFavoriteEvent(
+                            OnToggleFavoriteEvent(
                               favorite: FavoriteShoe(
                                 id: shoe.id,
                                 name: shoe.name,
@@ -66,8 +83,20 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                               ),
                             ),
                           );
+                    
                         },
-                        icon: Icon(Icons.favorite_border),
+                        icon: BlocBuilder<FavoriteBloc, FavoriteState>(
+                          builder: (context, state) {
+                            if (state is IsFavoriteState) {
+                              return Icon(
+                                state.isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                              );
+                            }
+                            return Icon(Icons.favorite_border);
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -79,13 +108,36 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.shoe.name, style: TextStyle(fontSize: 24)),
-              Text(widget.shoe.brand),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.shoe.name,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    '\$ ${widget.shoe.price}',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Text(widget.shoe.brand, style: TextStyle(color: Colors.grey)),
+              Text(widget.shoe.description),
+              Text(
+                'Sizes',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+
               SizedBox(
-                height: 50,
-                child: ListView.builder(
+                height: 40,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 10),
                   itemCount: sizes.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
@@ -95,22 +147,18 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                       onTap: () => setState(() {
                         _selectedSize = size;
                       }),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      child: Center(
                         child: Container(
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              color: isSelected
-                                  ? ColorPalette.primaryColor
-                                  : Colors.black54,
-                            ),
+                            border: Border.all(color: Colors.transparent),
                             borderRadius: BorderRadius.circular(8),
                             color: isSelected
                                 ? ColorPalette.primaryColor
                                 : Colors.white,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: Center(
                             child: Text(
                               sizes[index].size.toString(),
                               style: TextStyle(

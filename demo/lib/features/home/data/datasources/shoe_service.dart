@@ -9,9 +9,20 @@ class ShoeService {
     final uri = Uri.parse("https://sugary-wool-penguin.glitch.me/shoes");
     http.Response response = await http.get(uri);
     if (response.statusCode == HttpStatus.ok) {
-      List maps = jsonDecode(response.body);
+      final List maps = jsonDecode(response.body);
       return maps.map((e) => ShoeDto.fromJson(e)).toList();
     }
     return Future.error("Error fetching shoes: ${response.statusCode}");
+  }
+
+
+  Future<ShoeDto> getShoeById(int id) async {
+     final uri = Uri.parse("https://sugary-wool-penguin.glitch.me/shoes/$id");
+    http.Response response = await http.get(uri);
+    if (response.statusCode == HttpStatus.ok) {
+      final map = jsonDecode(response.body);
+      return ShoeDto.fromJson(map);
+    }
+    return Future.error("Error fetching shoe: ${response.statusCode}");
   }
 }

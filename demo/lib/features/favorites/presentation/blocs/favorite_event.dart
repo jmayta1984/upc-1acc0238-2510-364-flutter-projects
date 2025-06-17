@@ -15,3 +15,13 @@ class RemoveFavoriteEvent extends FavoriteEvent {
 }
 
 class GetAllFavoriteEvent extends FavoriteEvent {}
+
+class IsFavoriteEvent extends FavoriteEvent {
+  final int id;
+  const IsFavoriteEvent({required this.id});
+}
+
+class OnToggleFavoriteEvent extends FavoriteEvent {
+  final FavoriteShoe favorite;
+  const OnToggleFavoriteEvent({required this.favorite});
+}

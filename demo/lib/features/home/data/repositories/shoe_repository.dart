@@ -10,4 +10,9 @@ class ShoeRepository {
         .toList();
     return shoes;
   }
+
+  Future<Shoe> getShoeById(int id) async {
+    final Shoe shoe = (await shoeService.getShoeById(id)).toDomain();
+    return shoe;
+  }
 }
