@@ -1,3 +1,7 @@
+import 'package:demo/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:demo/features/auth/presentation/blocs/auth_state.dart';
+import 'package:demo/features/cart/presentation/blocs/cart_bloc.dart';
+import 'package:demo/features/cart/presentation/blocs/cart_event.dart';
 import 'package:demo/features/favorites/domain/entities/favorite_shoe.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_bloc.dart';
 import 'package:demo/features/favorites/presentation/blocs/favorite_event.dart';
@@ -42,7 +46,24 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: _selectedSize.isEmpty ? null : () {},
+            onPressed: _selectedSize.isEmpty
+                ? null
+                : () {
+                    context.read<CartBloc>().add(
+                      AddToCartEvent(
+                        shoeId: shoe.id,
+                        name: shoe.name,
+                        price: shoe.price,
+                        size: double.parse(_selectedSize),
+                        quantity: 1,
+                        username:
+                            (context.read<AuthBloc>().state as SuccessAuthState)
+                                .user
+                                .username,
+                        image: shoe.image,
+                      ),
+                    );
+                  },
             child: const Text("Add to cart"),
           ),
         ),
@@ -83,7 +104,6 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                               ),
                             ),
                           );
-                    
                         },
                         icon: BlocBuilder<FavoriteBloc, FavoriteState>(
                           builder: (context, state) {
@@ -117,7 +137,10 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                     child: Text(
                       widget.shoe.name,
                       maxLines: 1,
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Spacer(),

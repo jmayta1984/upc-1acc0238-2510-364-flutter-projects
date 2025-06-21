@@ -1,4 +1,5 @@
 import 'package:demo/core/themes/color_palette.dart';
+import 'package:demo/features/cart/presentation/pages/cart_page.dart';
 import 'package:demo/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:demo/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _NavigationState extends State<MainPage> {
   final List _pages = [
     HomePage(),
     FavoritesPage(),
-    Text("Cart")
+    CartPage()
   ];
   @override
   Widget build(BuildContext context) {
