@@ -14,40 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  /*final List<String> _genders = ["All", "Women", "Men", "Kids"];
-  String _selectedGender = "All";
- */
-  /*
-  List<Shoe> _shoes = [];
-  List<Shoe> _filteredShoes = [];
-*/
   final TextEditingController _search = TextEditingController();
 
-  /*
-  void _onChangedText() {
-    final query = _search.text.trim().toLowerCase();
-
-    setState(() {
-      if (query.isEmpty) {
-        _filteredShoes = _shoes;
-      } else {
-        _filteredShoes = _shoes
-            .where((shoe) => shoe.name.toLowerCase().contains(query))
-            .toList();
-      }
-    });
-  }
-*/
-  /*
-  Future loadData() async {
-    final List<Shoe> shoes = await ShoeRepository().getShoes();
-
-    setState(() {
-      _shoes = shoes;
-      _filteredShoes = _shoes;
-    });
-  }
-*/
   @override
   void initState() {
     super.initState();
@@ -63,7 +31,6 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              //  onChanged: (_) => _onChangedText(),
               controller: _search,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person),
@@ -126,62 +93,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-/*
-          SizedBox(
-            height: 50,
-            child: ListView.builder(
-              itemCount: _genders.length,
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final String gender = _genders[index];
-                final bool isSelected = gender == _selectedGender;
-                return GestureDetector(
-                  onTap: () => setState(() {
-                    _selectedGender = gender;
-                    /*   if (gender.toLowerCase() == 'all') {
-                      _filteredShoes = _shoes;
-                    } else {
-                      _filteredShoes = _shoes
-                          .where(
-                            (shoe) =>
-                                shoe.gender.toLowerCase() ==
-                                gender.toLowerCase(),
-                          )
-                          .toList();
-                    }
-                    */
-                  }),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: isSelected
-                              ? ColorPalette.primaryColor
-                              : Colors.black54,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                        color: isSelected
-                            ? ColorPalette.primaryColor
-                            : Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          _genders[index],
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black54,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-*/
           Expanded(
             child: BlocBuilder<ShoesBloc, ShoesState>(
               builder: (context, state) {

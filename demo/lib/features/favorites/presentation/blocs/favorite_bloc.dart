@@ -23,11 +23,6 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       emit(LoadedFavoriteState(favorites: favorites));
     });
 
-    on<IsFavoriteEvent>((event, emit) async {
-      final isFavorite = await _repository.isFavorite(event.id);
-      emit(IsFavoriteState(isFavorite: isFavorite));
-    });
-
     on<OnToggleFavoriteEvent>((event, emit) async {
       final favorite = event.favorite;
       final isFavorite = await _repository.isFavorite(favorite.id);
@@ -36,7 +31,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       } else {
         await _repository.insertFavorite(favorite);
       }
-      emit(IsFavoriteState(isFavorite: !isFavorite));
+      final favorites = await _repository.fetchAll();
+      emit(LoadedFavoriteState(favorites: favorites));
     });
   }
 }

@@ -22,12 +22,7 @@ class ShoeDetailPage extends StatefulWidget {
 class _ShoeDetailPageState extends State<ShoeDetailPage> {
   String _selectedSize = "";
 
-  @override
-  void initState() {
-    context.read<FavoriteBloc>().add(IsFavoriteEvent(id: widget.shoe.id));
-    super.initState();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     final Shoe shoe = widget.shoe;
@@ -107,9 +102,9 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                         },
                         icon: BlocBuilder<FavoriteBloc, FavoriteState>(
                           builder: (context, state) {
-                            if (state is IsFavoriteState) {
+                            if (state is LoadedFavoriteState) {
                               return Icon(
-                                state.isFavorite
+                                state.favorites.any((f) => f.id == shoe.id)
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                               );
